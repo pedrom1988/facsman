@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>FACSMAN — Crítica Urbana (UNIFACS Tancredo Neves)</title>
+    <style>
+      :root {
+        --bg: #0b0f14;
+        --panel: #101826;
+        --text: #e9eef6;
+        --muted: #9fb0c6;
+        --accent: #ffe600;
+        --ok: #00c878;
+        --bad: #ff3b3b;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial;
+        background: radial-gradient(
+          1200px 600px at 30% 20%,
+          #16233a 0%,
+          var(--bg) 50%,
+          #070a0f 100%
+        );
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 18px;
+      }
+      .wrap {
+        width: min(980px, 95vw);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        background: rgba(16, 24, 38, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 14px 14px;
+        backdrop-filter: blur(10px);
+      }
+      .title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .title h1 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: 0.3px;
+      }
+      .title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .hud {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .badge {
+        padding: 6px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.25);
+      }
+      .btn {
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+      .btn:hover {
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+      .panel {
+        background: rgba(16, 24, 38, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .legend {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .legend span {
+        white-space: nowrap;
+      }
+      .kbd {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        padding: 2px 7px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-bottom-width: 2px;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.22);
+        color: var(--text);
+      }
+      canvas {
+        width: 100%;
+        height: auto;
+        max-width: 980px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+        background: #000;
+        outline: none;
+      }
+      .tip {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="title">
+          <h1>FACSMAN — Crítica Urbana em Jogo (UNIFACS Tancredo Neves)</h1>
+          <p>
+            Fase 1: Rodoviária → Salvador Shopping • Fase 2: Salvador Shopping →
+            UNIFACS
+          </p>
+        </div>
+        <div class="hud">
+          <span class="badge">Fase: <b id="phase">1</b></span>
+          <span class="badge">Pontos: <b id="score">0</b></span>
+          <span class="badge">Vidas: <b id="lives">3</b></span>
+          <button class="btn" id="restart">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="legend">
+          <span><b style="color: #ffe600">●</b> FACSMAN</span>
+          <span><b style="color: #ff3b3b">■</b> Tráfego</span>
+          <span>🚌 Rodoviária (P)</span>
+          <span>🛍️ Shopping (S)</span>
+          <span>🎓 UNIFACS (U)</span>
+          <span>Ⓜ️ Metrô (M)</span>
+          <span>🟰 Passarela (=)</span>
+          <span>🏥 Hospital (H)</span>
+          <span>🏨 Hotel (O)</span>
+        </div>
+        <div class="tip">
+          Clique no jogo para focar. Teclas: <span class="kbd">↑</span>
+          <span class="kbd">↓</span> <span class="kbd">←</span>
+          <span class="kbd">→</span> • Reiniciar: <span class="kbd">R</span>
+        </div>
+      </div>
+
+      <canvas id="game" width="900" height="520" tabindex="0"></canvas>
+    </div>
+
+    <script src="./game.js"></script>
+  </body>
+</html>
